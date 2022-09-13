@@ -36,6 +36,10 @@
 
 ...
 
+<h2>Advanced Techniques</h2>
+
+...
+
 # Referências
 
 [PortSwigger Academy](https://portswigger.net/web-security/learning-path)<br>
