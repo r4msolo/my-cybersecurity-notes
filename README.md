@@ -20,6 +20,10 @@
 <li>CORS - Cross-origin Resource Sharing</li>
 <li>WebSockets</li>
 
+<h3>Advanced Techniques</h3>
+
+...
+
 <h2>Reverse Engineering</h2>
 
 ...
@@ -33,10 +37,6 @@
 ...
 
 <h2>OSINT - Open-source Intelligence</h2>
-
-...
-
-<h2>Advanced Techniques</h2>
 
 ...
 
