@@ -1,4 +1,4 @@
-<h1>..:: Directory Tranversal ::..</h1>
+<h1>..:: Directory Tranversal / Path Tranversal ::..</h1>
 
 É uma vulnerabilidade web que permite com que o hacker faça leitura de arquivos arbitrários no servidor que está rodando a aplicação, isso também inclui o código da aplicação, dados, credenciais para o sistema backend, em alguns casos o atacante pode escrever arquivos arbitrários no servidor, permitindo modificar dados e em ultimos casos tomar controle do servidor (Remote Code Execution).
 
@@ -27,3 +27,5 @@ A sequencia de ../ significa que iremos subir um level na estrutura dos diretór
 Nos sistemas baseado em UNIX o passwd mostra detalhes sobre os usuários que estão registrados no servidor.
 
 Em sistema Windows temos a diferença que para retornar um diretório usamos a barra invertida ..\\..\\..\\windows\win.ini, temos aqui o equivalente ao passwd no sitema de janelas :)
+<hr>
+Confira nesse link mais alguns exemplos e payloads utilizados em path tranversal: https://book.hacktricks.xyz/pentesting-web/file-inclusion
