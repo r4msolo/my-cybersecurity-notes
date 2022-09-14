@@ -28,7 +28,7 @@ Nos sistemas baseado em UNIX o passwd mostra detalhes sobre os usuários que est
 
 Em sistema Windows temos a diferença que para retornar um diretório usamos a barra invertida ..\\..\\..\\windows\win.ini, temos aqui o equivalente ao passwd no sitema de janelas :)
 
-<h4>Obstáculos comuns para explorar vulnerabilidades de Path Tranversal</h4>
+<h4><li>Obstáculos comuns para explorar vulnerabilidades de Path Tranversal</li></h4>
 
 Muitas aplicações implementam algum tipo de defesa contra ataques path tranversal no input do usuario, e isso geralmente pode ser contornado.
 
