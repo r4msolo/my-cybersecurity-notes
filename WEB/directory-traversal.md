@@ -27,5 +27,16 @@ A sequencia de ../ significa que iremos subir um level na estrutura dos diretór
 Nos sistemas baseado em UNIX o passwd mostra detalhes sobre os usuários que estão registrados no servidor.
 
 Em sistema Windows temos a diferença que para retornar um diretório usamos a barra invertida ..\\..\\..\\windows\win.ini, temos aqui o equivalente ao passwd no sitema de janelas :)
+
+<h4>Obstáculos comuns para explorar vulnerabilidades de Path Tranversal</h4>
+
+Muitas aplicações implementam algum tipo de defesa contra ataques path tranversal no input do usuario, e isso geralmente pode ser contornado.
+
+Se um aplicativo remover ou bloquear sequências de path tranversal do nome de arquivo fornecido pelo usuário, talvez seja possível contornar a defesa usando uma variedade de técnicas.
+
+Você pode usar um caminho absoluto da raiz do sistema de arquivos, como filename=/etc/passwd, para referenciar diretamente um arquivo sem usar nenhuma sequência de travessia.
+
+Talvez seja preciso utilizar sequencias de path tranversal com caracteres duplicados como por exemplo ....//....//....//etc//passwd, dependendo da forma como foi escrito o filtro pode simplesmente deletar uma das sequencias "../" por exemplo ....//....//....//etc//passwd na hora que a aplicação deletar a sequencia do payload ele juntara formando um simples ../../../etc/passwd.
+
 <hr>
 Confira nesse link mais alguns exemplos e payloads utilizados em path tranversal: https://book.hacktricks.xyz/pentesting-web/file-inclusion
