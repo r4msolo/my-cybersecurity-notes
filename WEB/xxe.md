@@ -16,5 +16,5 @@ padrão ou de plataforma para processar os dados XML no servidor.
   <li>Explorando XXE para retornar arquivos</li>
   <li>Explorando XXE para ataques SSRF</li>
   <li>Explorando blind XXE exfiltrando dados out-of-band</li>
-  <li>Explorando blind XXE para retornar daodos via mensagens de erro</li>
+  <li>Explorando blind XXE para retornar dados via mensagens de erro</li>
 </ul>
