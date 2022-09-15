@@ -55,6 +55,6 @@ Se um aplicativo exigir que o nome de arquivo fornecido pelo usuário termine co
 <hr>
 Confira nesse link mais alguns exemplos e payloads utilizados em path tranversal:<br>
 https://book.hacktricks.xyz/pentesting-web/file-inclusion
-
+<br>
 Referencia:<br><br>
 https://portswigger.net/web-security/file-path-traversal
