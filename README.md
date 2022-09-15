@@ -16,7 +16,7 @@
 <li>XSS - Cross-site Scripting</li>
 <li>DOM-Based Vulnerabilities</li>
 <li>Clickjacking</li>
-<li>Cross-site Request Forgery</li>
+<li>CSRF - Cross-site Request Forgery</li>
 <li>CORS - Cross-origin Resource Sharing</li>
 <li>WebSockets</li>
 
