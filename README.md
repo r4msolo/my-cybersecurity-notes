@@ -4,7 +4,7 @@
 <h3>Server Side</h3>
 <li>SQL Injection</li>
 <li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/directory-traversal.md">Directory Traversal</a></li>
-<li>XXE Injection</li>
+<li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/xxe.md">XXE Injection</a></li>
 <li>SSRF - Server-side Request Forgery</li>
 <li>Command Injection</li>
 <li>Information Disclosure</li>
