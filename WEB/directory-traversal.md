@@ -38,5 +38,23 @@ Você pode usar um caminho absoluto da raiz do sistema de arquivos, como filenam
 
 Talvez seja preciso utilizar sequencias de path tranversal com caracteres duplicados como por exemplo ....//....//....//etc//passwd, dependendo da forma como foi escrito o filtro pode simplesmente deletar uma das sequencias "../" por exemplo ....//....//....//etc//passwd na hora que a aplicação deletar a sequencia do payload ele juntara formando um simples ../../../etc/passwd.
 
+Em alguns contextos, como em um caminho de URL ou no parâmetro de nome de arquivo de uma solicitação multipart/form-data, os servidores da Web podem remover qualquer sequência de directory tranversal antes de passar sua entrada para a aplicação. Às vezes, você pode ignorar esse tipo de higienização por codificação de URL ou até mesmo codificação de URL dupla, os caracteres ../, resultando em %2e%2e%2f ou %252e%252e%252f, respectivamente. Várias codificações não padrão, como ..%c0%af ou ..%ef%bc%8f, também podem funcionar.
+
+Se um aplicativo exigir que o nome do arquivo fornecido pelo usuário comece com a pasta base esperada, como /var/www/images, talvez seja necessario incluir a pasta base seguida por sequências de passagem adequadas. Por exemplo:
+
+    filename=/var/www/images/../../../etc/passwd
+    
+Se um aplicativo exigir que o nome de arquivo fornecido pelo usuário termine com uma extensão de arquivo esperada, como .png, talvez seja possível usar um byte nulo para encerrar efetivamente o caminho do arquivo antes da extensão necessária. Por exemplo:
+
+    filename=../../../etc/passwd%00.png
+    
+ <h4>Como prevenir ataques de Directory Tranversal</h4>
+ 
+ A maneira mais efetiva de previnir esse ataque é evitar passar completamento o caminho informado pelo usuario para a API Filesystem. Muitas funções de aplicações podem ser reescritas para entregar o mesmo resultado de maneira mais segura.
+ 
 <hr>
-Confira nesse link mais alguns exemplos e payloads utilizados em path tranversal: https://book.hacktricks.xyz/pentesting-web/file-inclusion
+Confira nesse link mais alguns exemplos e payloads utilizados em path tranversal:<br>
+https://book.hacktricks.xyz/pentesting-web/file-inclusion
+
+Referencia:<br>
+https://portswigger.net/web-security/file-path-traversal
