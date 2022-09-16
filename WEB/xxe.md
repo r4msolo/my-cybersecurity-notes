@@ -13,9 +13,9 @@ padrão ou de plataforma para processar os dados XML no servidor. As vulnerabili
 <h2> Quais são os tipos de ataque XXE? </h2>
 
 <ul>
-  <li><b>Explorando XXE para retornar arquivos:</b>Uma entidade externa é definida contendo o conteúdo de um arquivo e retorna na resposta do aplicativo.</b></li>
-  <li><b>Explorando XXE para ataques SSRF:</b> Uma entidade externa é definida com base em um URL em um sistema de back-end.</li>
-  <li><b>Explorando blind XXE exfiltrando dados out-of-band:</b> Onde dados confidenciais são transmitidos do servidor de aplicativos para um sistema que o invasor controla.</li>
+  <li><b>Explorando XXE para retornar arquivos:</b>Uma entidade externa é definida contendo o conteúdo de um arquivo e retorna na resposta da aplicação. </b></li>
+  <li><b>Explorando XXE para ataques SSRF:</b> Uma entidade externa é definida com base em um URL em um sistema de backend.</li>
+  <li><b>Explorando blind XXE exfiltrando dados out-of-band:</b> Onde dados confidenciais são transmitidos do servidor da aplicação para um sistema que o invasor controla.</li>
   <li><b>Explorando blind XXE para retornar dados via mensagens de erro:</b> Onde o invasor pode acionar uma mensagem de erro de análise contendo dados confidenciais.</li>
 </ul>
 
@@ -24,9 +24,9 @@ padrão ou de plataforma para processar os dados XML no servidor. As vulnerabili
 Para executar um ataque de injeção XXE que recupera um arquivo arbitrário do sistema de arquivos do servidor, você precisa modificar o XML enviado de duas maneiras:
 
 <li>Introduzir (ou editar) um elemento doctype que define uma entidade externa que contém o caminho para o arquivo.</li>
-<li>Edite um valor de dados no XML que é retornado na resposta do aplicativo, para usar a entidade externa definida.</li>
+<li>Edite um valor de dados no XML que é retornado na resposta da aplicação, para usar a entidade externa definida.</li>
 
-Por exemplo, suponha que um aplicativo de compras verifique a quantidade em estoque de um produto enviando o seguinte XML para o servidor:
+Por exemplo, suponha que uma aplicação de compras verifique a quantidade em estoque de um produto enviando o seguinte XML para o servidor:
 
     <?xml version="1.0" encoding="UTF-8"?>
     <stockCheck><productId>381</productId></stockCheck>
@@ -46,11 +46,11 @@ Esse payload define um entidade externa como &xxe; que contem o valor de /etc/pa
 
 <h4>2) Exploiting XXE to perform SSRF Attacks</h4>
 
-Além da recuperação de dados sensíveis, o outro impacto principal dos ataques XXE é que eles podem ser usados para executar a falsificação de solicitação do servidor (SSRF). Essa é uma vulnerabilidade potencialmente séria, na qual o aplicativo do lado do servidor pode ser induzido para fazer solicitações HTTP a qualquer URL que o servidor possa acessar, isso inclui serviços internos no quais não estão expostos diretamente a internet.
+Além da recuperação de dados sensíveis, o outro impacto principal dos ataques XXE é que eles podem ser usados para executar a falsificação de solicitação do servidor (SSRF). Essa é uma vulnerabilidade potencialmente séria, na qual a aplicação do lado do servidor pode ser induzido para fazer solicitações HTTP a qualquer URL que o servidor possa acessar, isso inclui serviços internos no quais não estão expostos diretamente a internet.
 
 Para explorar uma vulnerabilidade XXE para executar um ataque SSRF, você precisa definir uma entidade XML externa usando a URL que deseja segmentar e usar a entidade definida dentro de um valor de dados. Se você puder usar a entidade definida em um valor de dados que for retornado na resposta do aplicativo, poderá visualizar a resposta da URL na resposta da aplicação e, portanto, obterá interação bidirecional com o sistema de backend. Caso contrário, você só poderá realizar ataques cegos de SSRF (que ainda podem ter consequências críticas).
 
-No exemplo XXE a seguir, a entidade externa fará com que o servidor faça uma solicitação HTTP de back-end a um sistema interno dentro da infraestrutura da organização:
+No exemplo XXE a seguir, a entidade externa fará com que o servidor faça uma solicitação HTTP de backend a um sistema interno dentro da infraestrutura da organização:
 
       <!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://internal.vulnerable-website.com/"> ]>
  
@@ -65,7 +65,7 @@ As vulnerabilidades Blind XXE ainda podem ser detectadas e exploradas, mas são 
 A superfície de ataque para vulnerabilidades de injeção XXE é óbvia em muitos casos, porque o tráfego HTTP normal da aplicação inclui solicitações que contêm dados no formato XML. Em outros casos, a superfície de ataque é menos visível. No entanto, se você olhar nos lugares certos, encontrará a superfície de ataque XXE em solicitações que não contêm nenhum XML.
 
 <h4> XInclude Attacks</h4>
-Alguns aplicativos recebem dados submitidos do cliente, incorporam-os no lado do servidor em um documento XML e analisam o documento. Um exemplo disso ocorre quando os dados substituídos pelo cliente são colocados em uma solicitação de SOAP de backend, que é processada pelo serviço SOAP (<a href="https://www.w3schools.com/xml/xml_soap.asp" target="_blank">Simple Object Access Protocol</a>) de back-end.
+Algumas aplicações recebem dados submitidos do cliente, incorporam-os no lado do servidor em um documento XML e analisam o documento. Um exemplo disso ocorre quando os dados substituídos pelo cliente são colocados em uma solicitação de SOAP de backend, que é processada pelo serviço SOAP (<a href="https://www.w3schools.com/xml/xml_soap.asp" target="_blank">Simple Object Access Protocol</a>) de backend.
 <br>
 Nessa situação, você não pode realizar um ataque XXE clássico, porque você não controla todo o documento XML e, portanto, não pode definir ou modificar um elemento DOCTYPE. No entanto, você pode usar XInclude em vez disso. XInclude é uma parte da especificação XML que permite que um documento XML seja construído a partir de subdocumentos. Você pode colocar um ataque de XInclude em qualquer valor de dados em um documento XML, para que o ataque possa ser executado em situações em que você controla apenas um único item de dados que é colocado em um documento XML do lado do servidor.
 <br>
@@ -98,7 +98,7 @@ Exemplo, se a solicitação normal contiver o seguinte:
 
       <?xml version="1.0" encoding="UTF-8"?><foo>bar</foo>
 
-Se o aplicativo tolera solicitações contendo XML no corpo da mensagem e analisar o conteúdo do corpo como XML, você poderá atingir a superfície de ataque XXE oculta simplesmente reformatando solicitações para usar o formato XML. 
+Se a aplicação tolera solicitações contendo XML no corpo da mensagem e analisar o conteúdo do corpo como XML, você poderá atingir a superfície de ataque XXE oculta simplesmente reformatando solicitações para usar o formato XML. 
 
 <h4>Como encontrar e testar vulnerabilidades XXE</h4>
 A grande maioria das vulnerabilidades XXE pode ser encontrada de maneira rápida e confiável, usando o scanner de vulnerabilidade da Burp Suite. Testar manualmente as vulnerabilidades XXE geralmente envolve:
