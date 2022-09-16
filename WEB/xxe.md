@@ -13,8 +13,8 @@ padrão ou de plataforma para processar os dados XML no servidor. As vulnerabili
 <h2> Quais são os tipos de ataque XXE? </h2>
 
 <ul>
-  <li><b>Explorando XXE para retornar arquivos:</b>Uma entidade externa é definida contendo o conteúdo de um arquivo e retorna na resposta da aplicação. </b></li>
-  <li><b>Explorando XXE para ataques SSRF:</b> Uma entidade externa é definida com base em um URL em um sistema de backend.</li>
+  <li><b>Explorando XXE para retornar arquivos:</b> Uma entidade externa é definida contendo o conteúdo de um arquivo e retorna na resposta da aplicação. </b></li>
+  <li><b>Explorando XXE para ataques SSRF:</b> Uma entidade externa é definida com base em uma URL em um sistema de backend.</li>
   <li><b>Explorando blind XXE exfiltrando dados out-of-band:</b> Onde dados confidenciais são transmitidos do servidor da aplicação para um sistema que o invasor controla.</li>
   <li><b>Explorando blind XXE para retornar dados via mensagens de erro:</b> Onde o invasor pode acionar uma mensagem de erro de análise contendo dados confidenciais.</li>
 </ul>
@@ -31,7 +31,7 @@ Por exemplo, suponha que uma aplicação de compras verifique a quantidade em es
     <?xml version="1.0" encoding="UTF-8"?>
     <stockCheck><productId>381</productId></stockCheck>
    
-A aplicação não tem uma defesa em particular contra ataques XXE, então você pode explorar essa vilnerabilidade por exemplo trazendo o arquivo /etc/passwd enviando o seguinte payload XXE:
+A aplicação não tem uma defesa em particular contra ataques XXE, então você pode explorar essa vulnerabilidade por exemplo trazendo o arquivo /etc/passwd enviando o seguinte payload XXE:
 
       <?xml version="1.0" encoding="UTF-8"?>
       <!DOCTYPE foo [ <!ENTITY xxe SYSTEM "file:///etc/passwd"> ]>
