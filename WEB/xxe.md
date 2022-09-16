@@ -24,7 +24,7 @@ padrão ou de plataforma para processar os dados XML no servidor. As vulnerabili
 Para executar um ataque de injeção XXE que recupera um arquivo arbitrário do sistema de arquivos do servidor, você precisa modificar o XML enviado de duas maneiras:
 
 <li>Introduzir (ou editar) um elemento doctype que define uma entidade externa que contém o caminho para o arquivo.</li>
-<li>Edite um valor de dados no XML que é retornado na resposta da aplicação, para usar a entidade externa definida.</li>
+<li>Editar um valor de dados no XML que é retornado na resposta da aplicação, para usar a entidade externa definida.</li>
 
 Por exemplo, suponha que uma aplicação de compras verifique a quantidade em estoque de um produto enviando o seguinte XML para o servidor:
 
