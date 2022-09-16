@@ -19,7 +19,7 @@ padrão ou de plataforma para processar os dados XML no servidor. As vulnerabili
   <li><b>Explorando blind XXE para retornar dados via mensagens de erro:</b> Onde o invasor pode acionar uma mensagem de erro de análise contendo dados confidenciais.</li>
 </ul>
 
-<h3>Exploiting XXE to retrieve files</h4>
+<h4>Exploiting XXE to retrieve files</h4>
 
 Para executar um ataque de injeção XXE que recupera um arquivo arbitrário do sistema de arquivos do servidor, você precisa modificar o XML enviado de duas maneiras:
 
@@ -43,3 +43,9 @@ Esse payload define um entidade externa como &xxe; que contem o valor de /etc/pa
       daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
       bin:x:2:2:bin:/bin:/usr/sbin/nologin
       ...
+
+<h4>Exploiting XXE to perform SSRF Attacks</h4>
+
+Além da recuperação de dados sensíveis, o outro impacto principal dos ataques XXE é que eles podem ser usados para executar a falsificação de solicitação do servidor (SSRF). Essa é uma vulnerabilidade potencialmente séria, na qual o aplicativo do lado do servidor pode ser induzido para fazer solicitações HTTP a qualquer URL que o servidor possa acessar.
+
+Para explorar uma vulnerabilidade XXE para executar um ataque SSRF, você precisa definir uma entidade XML externa usando a URL que deseja segmentar e usar a entidade definida dentro de um valor de dados. Se você puder usar a entidade definida em um valor de dados que for retornado na resposta do aplicativo, poderá visualizar a resposta da URL na resposta da aplicação e, portanto, obterá interação bidirecional com o sistema de backend. Caso contrário, você só poderá realizar ataques cegos de SSRF (que ainda podem ter consequências críticas).
