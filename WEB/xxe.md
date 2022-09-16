@@ -138,5 +138,5 @@ Praticamente todas as vulnerabilidades XXE surgem porque a biblioteca de anális
 Geralmente, é suficiente desativar a resolução de entidades externas e desativar o apoio ao Xinclude. Isso geralmente pode ser feito por meio de opções de configuração ou substituindo programaticamente o comportamento padrão. Consulte a documentação para sua biblioteca de análise XML ou API para obter detalhes sobre como desativar recursos desnecessários.
 <hr>
 <h2>References:</h2>
-https://portswigger.net/web-security/xxe
+https://portswigger.net/web-security/xxe<br>
 https://www.acunetix.com/blog/articles/band-xml-external-entity-oob-xxe/
