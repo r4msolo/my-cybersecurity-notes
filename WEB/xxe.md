@@ -19,7 +19,7 @@ padrão ou de plataforma para processar os dados XML no servidor. As vulnerabili
   <li><b>Explorando blind XXE para retornar dados via mensagens de erro:</b> Onde o invasor pode acionar uma mensagem de erro de análise contendo dados confidenciais.</li>
 </ul>
 
-<h4>Exploiting XXE to retrieve files</h4>
+<h4>1) Exploiting XXE to retrieve files</h4>
 
 Para executar um ataque de injeção XXE que recupera um arquivo arbitrário do sistema de arquivos do servidor, você precisa modificar o XML enviado de duas maneiras:
 
@@ -44,8 +44,18 @@ Esse payload define um entidade externa como &xxe; que contem o valor de /etc/pa
       bin:x:2:2:bin:/bin:/usr/sbin/nologin
       ...
 
-<h4>Exploiting XXE to perform SSRF Attacks</h4>
+<h4>2) Exploiting XXE to perform SSRF Attacks</h4>
 
-Além da recuperação de dados sensíveis, o outro impacto principal dos ataques XXE é que eles podem ser usados para executar a falsificação de solicitação do servidor (SSRF). Essa é uma vulnerabilidade potencialmente séria, na qual o aplicativo do lado do servidor pode ser induzido para fazer solicitações HTTP a qualquer URL que o servidor possa acessar.
+Além da recuperação de dados sensíveis, o outro impacto principal dos ataques XXE é que eles podem ser usados para executar a falsificação de solicitação do servidor (SSRF). Essa é uma vulnerabilidade potencialmente séria, na qual o aplicativo do lado do servidor pode ser induzido para fazer solicitações HTTP a qualquer URL que o servidor possa acessar isso inclui serviços internos no quais não estão expostos diretamente a internet.
 
 Para explorar uma vulnerabilidade XXE para executar um ataque SSRF, você precisa definir uma entidade XML externa usando a URL que deseja segmentar e usar a entidade definida dentro de um valor de dados. Se você puder usar a entidade definida em um valor de dados que for retornado na resposta do aplicativo, poderá visualizar a resposta da URL na resposta da aplicação e, portanto, obterá interação bidirecional com o sistema de backend. Caso contrário, você só poderá realizar ataques cegos de SSRF (que ainda podem ter consequências críticas).
+
+No exemplo XXE a seguir, a entidade externa fará com que o servidor faça uma solicitação HTTP de back-end a um sistema interno dentro da infraestrutura da organização:
+
+      <!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://internal.vulnerable-website.com/"> ]>
+ 
+<h4>3) Blind XXE vulnerabilities</h4>
+
+Muitas instâncias de vulnerabilidade XXE são blind (cegas). Isso significa que o aplicativo não retorna os valores de entidades externas definidas em suas respostas e, portanto, a recuperação direta dos arquivos do lado do servidor não é possível.
+
+As vulnerabilidades Blind XXE ainda podem ser detectadas e exploradas, mas são necessárias técnicas mais avançadas. Às vezes, você pode usar técnicas out-of-band para encontrar vulnerabilidades e explorá-las para exfiltrar os dados. E às vezes você pode acionar erros de análise XML que levam à divulgação de dados confidenciais nas mensagens de erro.
