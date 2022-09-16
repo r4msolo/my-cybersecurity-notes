@@ -46,7 +46,7 @@ Esse payload define um entidade externa como &xxe; que contem o valor de /etc/pa
 
 <h4>2) Exploiting XXE to perform SSRF Attacks</h4>
 
-Além da recuperação de dados sensíveis, o outro impacto principal dos ataques XXE é que eles podem ser usados para executar a falsificação de solicitação do servidor (SSRF). Essa é uma vulnerabilidade potencialmente séria, na qual o aplicativo do lado do servidor pode ser induzido para fazer solicitações HTTP a qualquer URL que o servidor possa acessar isso inclui serviços internos no quais não estão expostos diretamente a internet.
+Além da recuperação de dados sensíveis, o outro impacto principal dos ataques XXE é que eles podem ser usados para executar a falsificação de solicitação do servidor (SSRF). Essa é uma vulnerabilidade potencialmente séria, na qual o aplicativo do lado do servidor pode ser induzido para fazer solicitações HTTP a qualquer URL que o servidor possa acessar, isso inclui serviços internos no quais não estão expostos diretamente a internet.
 
 Para explorar uma vulnerabilidade XXE para executar um ataque SSRF, você precisa definir uma entidade XML externa usando a URL que deseja segmentar e usar a entidade definida dentro de um valor de dados. Se você puder usar a entidade definida em um valor de dados que for retornado na resposta do aplicativo, poderá visualizar a resposta da URL na resposta da aplicação e, portanto, obterá interação bidirecional com o sistema de backend. Caso contrário, você só poderá realizar ataques cegos de SSRF (que ainda podem ter consequências críticas).
 
@@ -59,3 +59,17 @@ No exemplo XXE a seguir, a entidade externa fará com que o servidor faça uma s
 Muitas instâncias de vulnerabilidade XXE são blind (cegas). Isso significa que o aplicativo não retorna os valores de entidades externas definidas em suas respostas e, portanto, a recuperação direta dos arquivos do lado do servidor não é possível.
 
 As vulnerabilidades Blind XXE ainda podem ser detectadas e exploradas, mas são necessárias técnicas mais avançadas. Às vezes, você pode usar técnicas out-of-band para encontrar vulnerabilidades e explorá-las para exfiltrar os dados. E às vezes você pode acionar erros de análise XML que levam à divulgação de dados confidenciais nas mensagens de erro.
+
+<h4>Encontrando a superfície de ataque oculta para injeção de XXE</h4>
+
+A superfície de ataque para vulnerabilidades de injeção XXE é óbvia em muitos casos, porque o tráfego HTTP normal da aplicação inclui solicitações que contêm dados no formato XML. Em outros casos, a superfície de ataque é menos visível. No entanto, se você olhar nos lugares certos, encontrará a superfície de ataque XXE em solicitações que não contêm nenhum XML.
+
+<li><h5>XInclude attacks</h5></li>
+Alguns aplicativos recebem dados submitidos do cliente, incorporam-os no lado do servidor em um documento XML e analisam o documento. Um exemplo disso ocorre quando os dados substituídos pelo cliente são colocados em uma solicitação de SOAP de backend, que é processada pelo serviço SOAP (<a href="https://www.w3schools.com/xml/xml_soap.asp" target="_blank">Simple Object Access Protocol</a>) de back-end.
+
+Nessa situação, você não pode realizar um ataque XXE clássico, porque você não controla todo o documento XML e, portanto, não pode definir ou modificar um elemento DOCTYPE. No entanto, você pode usar XInclude em vez disso. XInclude é uma parte da especificação XML que permite que um documento XML seja construído a partir de subdocumentos. Você pode colocar um ataque de XInclude em qualquer valor de dados em um documento XML, para que o ataque possa ser executado em situações em que você controla apenas um único item de dados que é colocado em um documento XML do lado do servidor.
+
+Para realizar um ataque XInclude, você precisa fazer referência ao XInclude namespace e fornecer o caminho para o arquivo que deseja incluir. Por exemplo:
+
+      <foo xmlns:xi="http://www.w3.org/2001/XInclude">
+      <xi:include parse="text" href="file:///etc/passwd"/></foo>
