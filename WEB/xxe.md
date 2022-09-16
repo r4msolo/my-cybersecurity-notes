@@ -8,7 +8,7 @@ de backend, aproveitando a vulnerabilidade para tentar ataques de falsificação
 
 <h2>Como surgem as vulnerabilidades de XXE?</h2>
 Algumas aplicações usam o formato XML para transmitir dados entre o navegador e o servidor. Aplicações que fazem isso quase sempre utilizam uma biblioteca
-padrão ou de plataforma para processar os dados XML no servidor. As vulnerabilidades XXE surgem porque a especificação XML contém vários recursos potencialmente perigosos, e os analisadores padrão suportam esses recursos, mesmo que normalmente não sejam usados pelo aplicativo.
+padrão ou de plataforma para processar os dados XML no servidor. As vulnerabilidades XXE surgem porque a especificação XML contém vários recursos potencialmente perigosos, e os analisadores padrão suportam esses recursos, mesmo que normalmente não sejam usados pela aplicação.
 
 <h2> Quais são os tipos de ataque XXE? </h2>
 
