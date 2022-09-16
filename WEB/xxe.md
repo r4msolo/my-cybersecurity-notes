@@ -139,3 +139,4 @@ Geralmente, é suficiente desativar a resolução de entidades externas e desati
 <hr>
 <h2>References:</h2>
 https://portswigger.net/web-security/xxe
+https://www.acunetix.com/blog/articles/band-xml-external-entity-oob-xxe/
