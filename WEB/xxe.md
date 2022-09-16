@@ -64,12 +64,54 @@ As vulnerabilidades Blind XXE ainda podem ser detectadas e exploradas, mas são 
 
 A superfície de ataque para vulnerabilidades de injeção XXE é óbvia em muitos casos, porque o tráfego HTTP normal da aplicação inclui solicitações que contêm dados no formato XML. Em outros casos, a superfície de ataque é menos visível. No entanto, se você olhar nos lugares certos, encontrará a superfície de ataque XXE em solicitações que não contêm nenhum XML.
 
-<li><h5>XInclude attacks</h5></li>
+<h4> XInclude Attacks</h4>
 Alguns aplicativos recebem dados submitidos do cliente, incorporam-os no lado do servidor em um documento XML e analisam o documento. Um exemplo disso ocorre quando os dados substituídos pelo cliente são colocados em uma solicitação de SOAP de backend, que é processada pelo serviço SOAP (<a href="https://www.w3schools.com/xml/xml_soap.asp" target="_blank">Simple Object Access Protocol</a>) de back-end.
-
+<br>
 Nessa situação, você não pode realizar um ataque XXE clássico, porque você não controla todo o documento XML e, portanto, não pode definir ou modificar um elemento DOCTYPE. No entanto, você pode usar XInclude em vez disso. XInclude é uma parte da especificação XML que permite que um documento XML seja construído a partir de subdocumentos. Você pode colocar um ataque de XInclude em qualquer valor de dados em um documento XML, para que o ataque possa ser executado em situações em que você controla apenas um único item de dados que é colocado em um documento XML do lado do servidor.
-
+<br>
 Para realizar um ataque XInclude, você precisa fazer referência ao XInclude namespace e fornecer o caminho para o arquivo que deseja incluir. Por exemplo:
 
       <foo xmlns:xi="http://www.w3.org/2001/XInclude">
       <xi:include parse="text" href="file:///etc/passwd"/></foo>
+
+<h4>XXE attacks via file upload</h4>
+
+Algumas aplicações permitem que os usuários enviem arquivos que são então processados no lado do servidor. Alguns formatos de arquivo comuns usam XML ou contêm subcomponentes XML. Exemplos de formatos baseados em XML são formatos de documentos do Office, como DOCX e formatos de imagem como SVG.
+
+Por exemplo, um aplicativo pode permitir que os usuários enviem imagens e processem ou validem-as no servidor após o upload. Mesmo que o aplicativo espere receber um formato como PNG ou JPEG, a biblioteca de processamento de imagens que está sendo usada pode suportar imagens SVG. Como o formato SVG usa XML, um invasor pode enviar uma imagem SVG maliciosa e, portanto, alcançar a superfície de ataque oculta para as vulnerabilidades XXE.
+<h4>XXE attacks via modified content type</h4>
+A maioria das solicitações de postagem usa o tipo de conteúdo padrão gerado pelos formulários HTML, como Application/X-Www-Form-Urlancoded. Alguns sites da Web esperam receber solicitações neste formato, mas toleram outros tipos de conteúdo, incluindo XML.
+
+Exemplo, se a solicitação normal contiver o seguinte:
+
+        POST /action HTTP/1.0
+        Content-Type: application/x-www-form-urlencoded
+        Content-Length: 7
+        
+        foo=bar
+        
+ Então você poderá enviar a seguinte solicitação, com o mesmo resultado:
+
+      POST /action HTTP/1.0
+      Content-Type: text/xml
+      Content-Length: 52
+
+      <?xml version="1.0" encoding="UTF-8"?><foo>bar</foo>
+
+Se o aplicativo tolera solicitações contendo XML no corpo da mensagem e analisar o conteúdo do corpo como XML, você poderá atingir a superfície de ataque XXE oculta simplesmente reformatando solicitações para usar o formato XML. 
+
+<h4>Como encontrar e testar vulnerabilidades XXE</h4>
+A grande maioria das vulnerabilidades XXE pode ser encontrada de maneira rápida e confiável, usando o scanner de vulnerabilidade da Burp Suite. Testar manualmente as vulnerabilidades XXE geralmente envolve:
+<ul>
+  <li>Teste para recuperação de arquivos Definindo uma entidade externa com base em um arquivo de sistema operacional bem conhecido e usando essa entidade em dados que são retornados na resposta do aplicativo.</li>
+  <li>Testando as vulnerabilidades Blind XXE, definindo uma entidade externa baseada em um URL para um sistema que você controla e monitorando as interações com esse sistema. O Burp Collaborator client é perfeito para esse fim.</li>
+  <li>Testando a inclusão vulnerável de dados não xml fornecidos pelo usuário em um documento XML do lado do servidor usando um ataque Xinclude para tentar recuperar um arquivo de sistema operacional bem conhecido.</li>
+</ul>
+
+<h4>Como prevenir vulnerabilidades XXE</h4>
+Praticamente todas as vulnerabilidades XXE surgem porque a biblioteca de análise XML do aplicativo suporta recursos XML potencialmente perigosos que o aplicativo não precisa ou pretende usar. A maneira mais fácil e eficaz de prevenir ataques XXE é desativar esses recursos.
+<br>
+Geralmente, é suficiente desativar a resolução de entidades externas e desativar o apoio ao Xinclude. Isso geralmente pode ser feito por meio de opções de configuração ou substituindo programaticamente o comportamento padrão. Consulte a documentação para sua biblioteca de análise XML ou API para obter detalhes sobre como desativar recursos desnecessários.
+<hr>
+<h2>References:</h2>
+https://portswigger.net/web-security/xxe
