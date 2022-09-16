@@ -80,11 +80,11 @@ exemplo:
 
 Passo a passo do ataque:
 
-    <li>O analisador XML primeiro processa a entidade de parâmetro %file, que carrega o arquivo /etc/passwd.</li>
-    <li>Em seguida, o analisador XML faz uma solicitação ao arquivo DTD do invasor em http://attack.example.com/evil.dtd.</li>
-    <li>Depois que o analisador XML processa o arquivo DTD do invasor, a entidade de parâmetro %all cria uma entidade geral chamada &send, que contém uma URL. Essa URL inclui o conteúdo do arquivo (por exemplo, http://attacker.com/collect.php?collect=root:!:0:0::/:/usr/bin/ksh…).</li>
-    <li>Finalmente, depois que a URL é construída, o analisador XML processa a entidade &send, que faz uma solicitação ao servidor do invasor.</li>
-    <li>O invasor pode registrar a solicitação em seu final e reconstruir o arquivo a partir da entrada de log.</li>
+  <li>O analisador XML primeiro processa a entidade de parâmetro %file, que carrega o arquivo /etc/passwd.</li>
+  <li>Em seguida, o analisador XML faz uma solicitação ao arquivo DTD do invasor em http://attack.example.com/evil.dtd.</li>
+  <li>Depois que o analisador XML processa o arquivo DTD do invasor, a entidade de parâmetro %all cria uma entidade geral chamada &send, que contém uma URL. Essa URL inclui o conteúdo do arquivo (por exemplo, http://attacker.com/collect.php?collect=root:!:0:0::/:/usr/bin/ksh…).</li>
+  <li>Finalmente, depois que a URL é construída, o analisador XML processa a entidade &send, que faz uma solicitação ao servidor do invasor.</li>
+  <li>O invasor pode registrar a solicitação em seu final e reconstruir o arquivo a partir da entrada de log.</li>
 
 
  
