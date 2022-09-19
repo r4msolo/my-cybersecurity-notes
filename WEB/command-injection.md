@@ -31,3 +31,28 @@ O comando echo exibe a string que foi passada como entrada ecoando isso na saida
     Error - productID was not provided
     aiwefwlguh
     29: command not found
+
+As 3 linhas de saida demostram que:
+
+<li>O comando stockreport.pl original foi executado sem seus argumentos esperados e, portanto, retornou uma mensagem de erro.</li>
+<li>O comando injetado echo foi executado e a string fornecida foi ecoada na saída.</li>
+<li>O argumento original 29 foi executado como um comando, o que causou um erro.</li>
+
+Colocar o separador de comando adicional & após o comando injetado geralmente é útil porque separa o comando injetado do que segue o ponto de injeção. Isso reduz a probabilidade de que o que se segue impeça a execução do comando injetado.
+
+<h2>Blind OS command injection vulnerabilities</h2>
+
+Muitas vezes instancias de OS command injection são do tipo blind (cega). Isso significa que a aplicação não retorna saida do comando em uma resposta HTTP. Vulnerabilidades do tipo blind ainda podem ser exploradas, porem usando técnicas diferentes.
+Considere que o site permite o usuario enviar um feedback. O usuario entra com o email dele e deixa uma mensagem de feedback. O lado do servidor gera um email para o administrador do site contendo a mensagem. Para fazer isso ele chama fora do programa mail com os seguintes detalhes. por exemplo:
+
+        mail -s "This site is great" -aFrom:peter@normal-user.net feedback@vulnerable-website.com
+        
+A saida do programa mail (se tiver) não é retornada na resposta da aplicação, e então usamos o echo payload não seria efetivo, Nessa situação, você pode usar uma variedade de técnicas para detectar e explorar uma vulnerabilidade.
+
+<h3>Detectando um Blind OS Commmand Injection usando tempo de espera</h3>
+
+Você pode usar um comando injetado que irá executar um delay, permitindo assim você confirmar que o comando foi executado com base no tempos de espera informado. O ping é um comando efetiivo para fazer isso, ele permite especificar o numero de pacotes ICMP para enviar, e portanto ele leva o tempo necessario para o comando rodar.
+
+        & ping -c 10 127.0.0.1 &
+        
+Esse comando irá causar na aplicação um loopback no adaptador de rede por 10 segundos. 
