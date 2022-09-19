@@ -1,9 +1,9 @@
 <h1>Command Injection</h1>
 
-<h2>O que é o Command OS injection? </h2>
+<h2>O que é o Command Injection? </h2>
 
 A injeção de comando do SO (também conhecida como injeção de shell) é uma vulnerabilidade de segurança da Web que permite que um invasor execute comandos
-arbitrários do sistema operacional (SO) no servidor que está executando um aplicativo e, normalmente, compromete totalmente o aplicativo e todos os seus 
+arbitrários do sistema operacional (SO) no servidor que está executando uma aplicação e, normalmente, compromete totalmente a aplicação e todos os seus 
 dados. Muitas vezes, um invasor pode aproveitar uma vulnerabilidade de injeção de comando do SO para comprometer outras partes da infraestrutura 
 de hospedagem, explorando relações de confiança para direcionar o ataque para outros sistemas dentro da organização.
 
@@ -21,3 +21,13 @@ Essa saida do comando de estoque ṕara determinado item é retornado para o usu
 atacante pode submeter a seguinte entrada para executar o comando arbitrario:
 
     & echo aiwefwlguh &
+
+Se essa entrada for enviada no parametro productID, então temos a execução do comando pela aplicação da seguinte forma:
+
+        stockreport.pl & echo aiwefwlguh & 29
+
+O comando echo exibe a string que foi passada como entrada ecoando isso na saida, acaba sendo uma forma útil de testar tipos de command injection. O caracter & é um comando separador do shell, ele consegue concatenar comandos executando um após o outro. O resultado disso é retornado para o usuario como no exemplo da seguinte forma:
+
+    Error - productID was not provided
+    aiwefwlguh
+    29: command not found
