@@ -5,7 +5,7 @@
 <li>SQL Injection</li>
 <li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/directory-traversal.md">Directory Traversal</a></li>
 <li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/xxe.md">XXE Injection</a></li>
-<li>SSRF - Server-side Request Forgery</li>
+<li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/ssrf.md">SSRF - Server-side Request Forgery</a></li>
 <li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/command-injection.md">Command Injection</a></li>
 <li>Information Disclosure</li>
 <li>Access Control Vulnerabilities and Privilege Escalation</li>
