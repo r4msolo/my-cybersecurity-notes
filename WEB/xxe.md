@@ -90,7 +90,7 @@ Passo a passo do ataque:
  
 <h4>4) Blind XXE vulnerabilities</h4>
 
-Muitas instâncias de vulnerabilidade XXE são blind (cegas). Isso significa que o aplicativo não retorna os valores de entidades externas definidas em suas respostas e, portanto, a recuperação direta dos arquivos do lado do servidor não é possível.
+Muitas instâncias de vulnerabilidade XXE são blind (cegas). Isso significa que a aplicação não retorna os valores de entidades externas definidas em suas respostas e, portanto, a recuperação direta dos arquivos do lado do servidor não é possível.
 
 As vulnerabilidades Blind XXE ainda podem ser detectadas e exploradas, mas são necessárias técnicas mais avançadas. Às vezes, você pode usar técnicas out-of-band para encontrar vulnerabilidades e explorá-las para exfiltrar os dados. E às vezes você pode acionar erros de análise XML que levam à divulgação de dados confidenciais nas mensagens de erro.
 
@@ -112,7 +112,7 @@ Para realizar um ataque XInclude, você precisa fazer referência ao XInclude na
 
 Algumas aplicações permitem que os usuários enviem arquivos que são então processados no lado do servidor. Alguns formatos de arquivo comuns usam XML ou contêm subcomponentes XML. Exemplos de formatos baseados em XML são formatos de documentos do Office, como DOCX e formatos de imagem como SVG.
 
-Por exemplo, um aplicativo pode permitir que os usuários enviem imagens e processem ou validem-as no servidor após o upload. Mesmo que o aplicativo espere receber um formato como PNG ou JPEG, a biblioteca de processamento de imagens que está sendo usada pode suportar imagens SVG. Como o formato SVG usa XML, um invasor pode enviar uma imagem SVG maliciosa e, portanto, alcançar a superfície de ataque oculta para as vulnerabilidades XXE.
+Por exemplo, uma aplicatição pode permitir que os usuários enviem imagens e processem ou validem-as no servidor após o upload. Mesmo que a aplicação espere receber um formato como PNG ou JPEG, a biblioteca de processamento de imagens que está sendo usada pode suportar imagens SVG. Como o formato SVG usa XML, um invasor pode enviar uma imagem SVG maliciosa e, portanto, alcançar a superfície de ataque oculta para as vulnerabilidades XXE.
 <h4>XXE attacks via modified content type</h4>
 A maioria das solicitações de postagem usa o tipo de conteúdo padrão gerado pelos formulários HTML, como Application/X-Www-Form-Urlancoded. Alguns sites da Web esperam receber solicitações neste formato, mas toleram outros tipos de conteúdo, incluindo XML.
 
@@ -137,13 +137,13 @@ Se a aplicação tolera solicitações contendo XML no corpo da mensagem e anali
 <h4>Como encontrar e testar vulnerabilidades XXE</h4>
 A grande maioria das vulnerabilidades XXE pode ser encontrada de maneira rápida e confiável, usando o scanner de vulnerabilidade da Burp Suite. Testar manualmente as vulnerabilidades XXE geralmente envolve:
 <ul>
-  <li>Teste para recuperação de arquivos Definindo uma entidade externa com base em um arquivo de sistema operacional bem conhecido e usando essa entidade em dados que são retornados na resposta do aplicativo.</li>
+  <li>Teste para recuperação de arquivos Definindo uma entidade externa com base em um arquivo de sistema operacional bem conhecido e usando essa entidade em dados que são retornados na resposta do aplicação.</li>
   <li>Testando as vulnerabilidades Blind XXE, definindo uma entidade externa baseada em um URL para um sistema que você controla e monitorando as interações com esse sistema. O Burp Collaborator client é perfeito para esse fim.</li>
   <li>Testando a inclusão vulnerável de dados não xml fornecidos pelo usuário em um documento XML do lado do servidor usando um ataque Xinclude para tentar recuperar um arquivo de sistema operacional bem conhecido.</li>
 </ul>
 
 <h4>Como prevenir vulnerabilidades XXE</h4>
-Praticamente todas as vulnerabilidades XXE surgem porque a biblioteca de análise XML do aplicativo suporta recursos XML potencialmente perigosos que o aplicativo não precisa ou pretende usar. A maneira mais fácil e eficaz de prevenir ataques XXE é desativar esses recursos.
+Praticamente todas as vulnerabilidades XXE surgem porque a biblioteca de análise XML da aplicação suporta recursos XML potencialmente perigosos que a aplicação não precisa ou pretende usar. A maneira mais fácil e eficaz de prevenir ataques XXE é desativar esses recursos.
 <br>
 Geralmente, é suficiente desativar a resolução de entidades externas e desativar o apoio ao Xinclude. Isso geralmente pode ser feito por meio de opções de configuração ou substituindo programaticamente o comportamento padrão. Consulte a documentação para sua biblioteca de análise XML ou API para obter detalhes sobre como desativar recursos desnecessários.
 <hr>
