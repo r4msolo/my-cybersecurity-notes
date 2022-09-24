@@ -2,7 +2,7 @@
 
 <h2>WEB Vulnerabilities</h2>
 <h3>Server Side</h3>
-<li>SQL Injection</li>
+<li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/sqli.md">SQL Injection</a></li>
 <li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/directory-traversal.md">Directory Traversal</a></li>
 <li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/xxe.md">XXE Injection</a></li>
 <li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/ssrf.md">SSRF - Server-side Request Forgery</a></li>
