@@ -11,8 +11,46 @@ realizar um ataque de negação de serviço.
 
 <h2>Exemplos de SQL Injection</h2>
 
-<li>Retrieving hidden data</li>
-<li>Subverting application logic</li>
-<li>UNION Attacks</li>
-<li>Examining the database</li>
-<li>Blind SQL Injection</li>
+<li>Retrieving hidden data, quando você modifica o SQL para retornar resultados adicionais</li>
+<li>Subverting application logic, quando você muda a consulta para interferir na logica da aplicação</li>
+<li>UNION Attacks, Quando você recupera dados de uma tabela de banco de dados diferente</li>
+<li>Examining the database,quando você pode extrair a informação sobre a versão de estrutura do banco de dados</li>
+<li>Blind SQL Injection, quando o resultado da consulta não é retornado na resposta da aplicação</li>
+
+<h2>Recuperando dado oculto</h2>
+
+Considere que a aplicação que mostra produtos em categorias diferentes. Quando o usuario clicla na categoria Gifts, o seu navegador pede pela seguinte URL:
+
+    https://insecure-website.com/products?category=Gifts
+    
+Isso faz com que a aplicação faça uma consulta SQL para retornar detalhes de produtos relevantes do banco de dados:
+
+    SELECT * FROM products WHERE category = 'Gifts' AND released = 1
+    
+Essa consulta SQL solicita que o banco de dados retorne:
+
+<li>Todos detalhes (*)</li>
+<li>da tabela de produtos</li>
+<li>onde a categoria é Gifts</li>
+<li>e released é 1</li>
+
+A restrição released = 1 é usada para esconder produtos que não foram lançados, para produtos ainda não lançados presumisse release = 0.
+A aplicação não implementa nenhuma defesa contra ataques SQL injection, então um atacante pode construir um ataque como:
+
+    https://insecure-website.com/products?category=Gifts'--
+    
+Isso resulta em uma consulta SQL:
+     
+    SELECT * FROM products WHERE category = 'Gifts'--' AND released = 1
+    
+A sequencia de caracteres -- indica um comentario em SQL, e significa que o resto da consulta não sera interpretada. Isso remove efetivamente o resto da consulta de forma que não existe mais o AND released = 1. Isso significa que todos produtos serão mostrados, incluindo os produtos não lançados.
+
+Indo além, um invasor pode fazer com que a aplicação exiba todos os produtos em qualquer categoria, incluindo categorias que ele não conhece:
+
+    https://insecure-website.com/products?category=Gifts'+OR+1=1--
+    
+O resultado dessa consulta SQL:
+
+    SELECT * FROM products WHERE category = 'Gifts' OR 1=1--' AND released = 1
+    
+A consulta modificada retornará todos os itens em que a categoria seja Gifts ou 1 seja igual a 1. Como 1=1 é sempre verdadeiro, a consulta retornará todos os itens.
