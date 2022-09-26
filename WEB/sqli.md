@@ -54,3 +54,30 @@ O resultado dessa consulta SQL:
     SELECT * FROM products WHERE category = 'Gifts' OR 1=1--' AND released = 1
     
 A consulta modificada retornará todos os itens em que a categoria seja Gifts ou 1 seja igual a 1. Como 1=1 é sempre verdadeiro, a consulta retornará todos os itens.
+
+<h2>Subvertendo a lógica da aplicação</h2>
+
+Considere que a aplicação deixa os usuarios logar com o username e password. Se o usuario enviar um username wiener e a senha bluecheese, a aplicação irá verificar as credenciais por meio da sequinte consulta SQL:
+
+        SELECT * FROM users WHERE username = 'wiener' AND password = 'bluecheese'
+        
+Se a consulta retornar detalhes do usuario então o login é efetuado, senão, ela será rejeitada.
+Aqui o atacante pode logar em qualquer usuario sem a senha simplesmente usando o comentario SQL -- para remover a senha verificada pela clausula WHERE na consulta. Por exemplo, enviando um usuario administrator'-- e uma senha em branca resultará na seguinte query:
+
+        SELECT * FROM users WHERE username = 'administrator'--' AND password = ''
+        
+A consulta irá retorna o usuario que o username é administrator e irá logar o atacante nessa conta.
+
+<h2>Retornando dados de outra tabela no banco de dados</h2>
+
+No caso onde o resultado da consulta SQL é retornado na resposta da aplicação, o atacante pode aproveitar a vulnerabilidade de SQL Injection para retornar dados de uma outra tabela no banco de dados. Isso pode ser feito usando a clausula UNION, que deixa você executar um SELECT adicional na consulta e acrescenta no final da consulta original.
+
+Por exemplo, se a aplicação executa a seguinte consulta contendo a entrada do usuario 'Gifts'.
+
+        SELECT name, description FROM products WHERE category = 'Gifts'
+        
+Então o atacante pode enviar a entrada:
+
+        ' UNION SELECT username, password FROM users--
+        
+Isso fará a aplicação retornar todos usernames e senhas, juntamente com os nomes e descrições dos produtos.
