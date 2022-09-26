@@ -81,3 +81,16 @@ Então o atacante pode enviar a entrada:
         ' UNION SELECT username, password FROM users--
         
 Isso fará a aplicação retornar todos usernames e senhas, juntamente com os nomes e descrições dos produtos.
+
+<h2>Examinando o banco de dados</h2>
+
+Após a identificação de um SQL Injection, geralmente é útil obter algumas informações sobre o banco de dados. Essas informações podem abrir caminhos para uma maior exploração.
+
+Você pode consultar por detalhes de versão do banco de dados. A maneira como isso é feito depende do tipo de banco de dados. Por exemplo, no Oracle você pode executar:
+
+        SELECT * FROM v$version
+        
+Você também pode determinar tabelas existentes, e quais colunas ela contem. Por exemplo, na maioria dos bancos de dados você pode executar a seguinte consulta para listar as tabelas:
+
+        SELECT * FROM information_schema.tables
+        
