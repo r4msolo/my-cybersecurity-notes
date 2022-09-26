@@ -94,3 +94,12 @@ Você também pode determinar tabelas existentes, e quais colunas ela contem. Po
 
         SELECT * FROM information_schema.tables
         
+<h2>Vulnerabilidades de Blind SQL injection</h2>
+
+Muitas vezes o SQL Injection é do tipo blind. Isso significa que a aplicação não retorna nenhum resultado da query SQL ou detalhes de algum erro do banco de dados na resposta. Vulnerabilidades Blind ainda podem ser utilizadas para acessar informações não autorizadas, mas as técnicas envolvidas são geralmente mais complicadas e dificeis de ser executadas.
+
+Dependendo da natureza da vulnerabilidade e do banco de dados envolvido, as seguintes técnicas podem ser usadas para explorar vulnerabilidades de SQL Injection Blind:
+
+<li>Você pode mudar a logica da query para acionar uma diferença detectavel na resposta da aplicação dependendo da verdade de uma unica condição. Isso pode envolver uma injeção de uma nova condição em alguma lógica booleana ou o acionamento condicional de um erro, como uma divisão por zero.</li>
+<li>Você pode acionar condicionalmente um delay no na consulta da query, permitindo assim verificar a veracidade de uma informação baseado no tempo de resposta da aplicação.</li>
+<li>Você pode acionar uma interação <a href="https://notsosecure.com/out-band-exploitation-oob-cheatsheet">out-of-band</a>, usando técnicas OAST. Essa técnica é extremamente poderosa e funciona em situações onde outras técnicas não funcionam. Você pode exfiltrar dados via comunicação out-of-band, por exemplo pondo o dado dentro de uma consulta DNS para algum dominio em seu controle.</li>
