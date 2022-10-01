@@ -18,7 +18,7 @@
 <li>Clickjacking</li>
 <li>CSRF - Cross-site Request Forgery</li>
 <li>CORS - Cross-origin Resource Sharing</li>
-<li>WebSockets</li>
+<li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/websockets.md">WebSockets</li>
 
 <h3>Advanced Techniques</h3>
 
