@@ -9,7 +9,7 @@
 <li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/command-injection.md">Command Injection</a></li>
 <li>Information Disclosure</li>
 <li>Access Control Vulnerabilities and Privilege Escalation</li>
-<li>File Upload Injections</li>
+<li><a href="https://github.com/r4msolo/my-cybersecurity-notes/blob/main/WEB/file-upload.md">File Upload Injections</a></li>
 <li>Authentication</li>
 
 <h3>Client Side</h3>
