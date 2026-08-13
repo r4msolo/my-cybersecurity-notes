@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Notes - Hacker Edition</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff00;
+            --primary-dark: #00cc00;
+            --secondary: #ff00ff;
+            --accent: #00ffff;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #000000;
+            --text: #00ff00;
+            --text-secondary: #00dd00;
+            --border: #00ff0033;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: var(--darker-bg);
+            color: var(--text);
+            overflow: hidden;
+            letter-spacing: 0.02em;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 255, 0, 0.03),
+                    rgba(0, 255, 0, 0.03) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+            animation: flicker 0.15s infinite;
+            z-index: 1;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.97; }
+            50% { opacity: 0.99; }
+            100% { opacity: 0.97; }
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background: var(--dark-bg);
+            border-right: 2px solid var(--primary);
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: -10px 0 30px rgba(0, 255, 0, 0.1);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--secondary);
+            text-shadow: 0 0 10px var(--secondary), 0 0 20px rgba(255, 0, 255, 0.3);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 15px;
+        }
+
+        .nav-section {
+            margin-bottom: 25px;
+        }
+
+        .nav-section-title {
+            color: var(--accent);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            text-shadow: 0 0 5px var(--accent);
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px 12px;
+            margin-bottom: 5px;
+            color: var(--text);
+            text-decoration: none;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-size: 13px;
+        }
+
+        .nav-link:hover {
+            border-left-color: var(--primary);
+            color: var(--primary);
+            padding-left: 18px;
+            background: rgba(0, 255, 0, 0.05);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .nav-link.active {
+            border-left-color: var(--secondary);
+            color: var(--secondary);
+            background: rgba(255, 0, 255, 0.1);
+            text-shadow: 0 0 10px var(--secondary);
+        }
+
+        .nav-link-sub {
+            padding-left: 25px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--dark-bg);
+            border-left: 2px solid var(--primary);
+        }
+
+        .header {
+            padding: 20px 30px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 24px;
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .search-box {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid var(--primary);
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            width: 250px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--primary), inset 0 0 10px rgba(0, 255, 0, 0.1);
+        }
+
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .content::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* MARKDOWN STYLING */
+        #content h1 {
+            color: var(--primary);
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 28px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        #content h2 {
+            color: var(--accent);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 22px;
+            text-shadow: 0 0 8px var(--accent);
+        }
+
+        #content h3 {
+            color: var(--secondary);
+            margin-top: 20px;
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        #content h4, #content h5, #content h6 {
+            color: var(--text-secondary);
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        #content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        #content a {
+            color: var(--accent);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--accent);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        #content a:hover {
+            color: var(--primary);
+            text-shadow: 0 0 8px var(--accent);
+            border-bottom-color: var(--primary);
+        }
+
+        #content code {
+            background: rgba(0, 255, 0, 0.1);
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            font-size: 0.9em;
+        }
+
+        #content pre {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            overflow-x: auto;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+        }
+
+        #content pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--primary);
+        }
+
+        #content blockquote {
+            border-left: 3px solid var(--secondary);
+            padding-left: 15px;
+            margin-left: 10px;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        #content ul, #content ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        #content li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        #content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            border: 1px solid var(--primary);
+        }
+
+        #content th {
+            background: rgba(0, 255, 0, 0.15);
+            color: var(--primary);
+            padding: 12px;
+            border: 1px solid var(--primary);
+            text-align: left;
+        }
+
+        #content td {
+            padding: 12px;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        #content tr:hover {
+            background: rgba(0, 255, 0, 0.05);
+        }
+
+        /* LOADING STATE */
+        .loading {
+            text-align: center;
+            color: var(--accent);
+            font-size: 18px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* HOME PAGE */
+        .home-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .home-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px var(--primary), 0 0 40px rgba(0, 255, 0, 0.3);
+        }
+
+        .home-content p {
+            font-size: 16px;
+            color: var(--accent);
+            margin-bottom: 30px;
+        }
+
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--dark-bg);
+            border-top: 2px solid var(--primary);
+            padding: 8px 20px;
+            font-size: 12px;
+            color: var(--text);
+            display: flex;
+            justify-content: space-between;
+            z-index: 3;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                border-left: none;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .search-box {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                🛡️ CYBERSECURITY<br>NOTES
+            </div>
+
+            <div id="nav-container"></div>
+        </div>
+
+        <div class="main">
+            <div class="header">
+                <h1 id="page-title">Cybersecurity Notes</h1>
+                <input type="text" class="search-box" id="search" placeholder="Buscar...">
+            </div>
+
+            <div class="content">
+                <div id="content">
+                    <div class="home-content">
+                        <h1>🛡️ CYBERSECURITY NOTES</h1>
+                        <p>Documentação completa sobre vulnerabilidades web, mobile, crypto e OSINT</p>
+                        <p style="font-size: 14px; color: var(--text-secondary);">
+                            > Selecione um tópico no menu para começar
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-item">
+            <div class="status-indicator"></div>
+            <span id="status">Sistema Online</span>
+        </div>
+        <div class="status-item">
+            <span id="current-page">HOME</span>
+        </div>
+    </div>
+
+    <script>
+        // Configuração de navegação
+        const navConfig = {
+            home: { title: 'Home', file: null, icon: '🏠' },
+            sections: [
+                {
+                    title: '🖥️ Vulnerabilidades Web',
+                    items: [
+                        { title: 'SQL Injection', file: 'WEB/sqli.md' },
+                        { title: 'Command Injection', file: 'WEB/command-injection.md' },
+                        { title: 'XXE Injection', file: 'WEB/xxe.md' },
+                        { title: 'XXE Injection (Nova)', file: 'WEB/xxe-new.md' },
+                        { title: 'SSRF', file: 'WEB/ssrf.md' },
+                        { title: 'SSRF (Nova)', file: 'WEB/ssrf-new.md' },
+                        { title: 'File Upload', file: 'WEB/file-upload.md' },
+                        { title: 'File Upload (Nova)', file: 'WEB/file-upload-new.md' },
+                        { title: 'Directory Traversal', file: 'WEB/directory-traversal.md' },
+                        { title: 'Directory Traversal (Nova)', file: 'WEB/directory-traversal-new.md' },
+                        { title: 'WebSockets', file: 'WEB/websockets.md' },
+                        { title: 'WebSockets (Nova)', file: 'WEB/websockets-new.md' }
+                    ]
+                },
+                {
+                    title: '🔍 Tópicos Avançados',
+                    items: [
+                        { title: 'Vulnerabilidades Atuais', file: 'CURRENT_VULNERABILITIES.md' },
+                        { title: 'Reverse Engineering - Overview', file: 'REVERSE_ENGINEERING/README.md' },
+                        { title: 'Análise Estática', file: 'REVERSE_ENGINEERING/static-analysis.md' },
+                        { title: 'Análise Dinâmica (Frida)', file: 'REVERSE_ENGINEERING/dynamic-analysis-frida.md' },
+                        { title: 'Cryptography - Overview', file: 'CRYPTO/README.md' },
+                        { title: 'Algoritmos Fracos', file: 'CRYPTO/weak-algorithms.md' },
+                        { title: 'Key Management', file: 'CRYPTO/insecure-key-management.md' },
+                        { title: 'Password Hashing', file: 'CRYPTO/weak-password-hashing.md' },
+                        { title: 'Mobile Security - Overview', file: 'MOBILE/README.md' },
+                        { title: 'Android Storage', file: 'MOBILE/android-insecure-storage.md' },
+                        { title: 'Android Components', file: 'MOBILE/android-exported-components.md' },
+                        { title: 'OSINT - Overview', file: 'OSINT/README.md' },
+                        { title: 'Domain Enumeration', file: 'OSINT/domain-enumeration.md' }
+                    ]
+                },
+                {
+                    title: '📚 Recursos e Testes',
+                    items: [
+                        { title: 'Guia de Testes', file: 'TESTING_GUIDE.md' },
+                        { title: 'Recursos', file: 'RESOURCES.md' },
+                        { title: 'Início Rápido', file: 'QUICKSTART.md' },
+                        { title: 'Resumo do Projeto', file: 'PROJECT_SUMMARY.md' }
+                    ]
+                }
+            ]
+        };
+
+        let currentFile = null;
+
+        // Renderizar navegação
+        function renderNav() {
+            const navContainer = document.getElementById('nav-container');
+            navContainer.innerHTML = '';
+
+            // Home link
+            const homeLink = document.createElement('a');
+            homeLink.className = 'nav-link active';
+            homeLink.textContent = '🏠 Home';
+            homeLink.onclick = () => loadHome();
+            navContainer.appendChild(homeLink);
+
+            navContainer.innerHTML += '<div style="height: 10px;"></div>';
+
+            // Sections
+            navConfig.sections.forEach(section => {
+                const sectionTitle = document.createElement('div');
+                sectionTitle.className = 'nav-section-title';
+                sectionTitle.textContent = section.title;
+                navContainer.appendChild(sectionTitle);
+
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'nav-section';
+
+                section.items.forEach(item => {
+                    const link = document.createElement('a');
+                    link.className = 'nav-link nav-link-sub';
+                    link.textContent = item.title;
+                    link.onclick = () => loadPage(item.file, item.title);
+                    sectionDiv.appendChild(link);
+                });
+
+                navContainer.appendChild(sectionDiv);
+            });
+        }
+
+        // Carregar página home
+        function loadHome() {
+            currentFile = null;
+            const content = document.getElementById('content');
+            content.innerHTML = `
+                <div class="home-content">
+                    <h1>🛡️ CYBERSECURITY NOTES</h1>
+                    <p>Documentação completa sobre vulnerabilidades web, mobile, crypto e OSINT</p>
+                    <p style="font-size: 14px; color: var(--text-secondary);">
+                        > Selecione um tópico no menu para começar
+                    </p>
+                </div>
+            `;
+            document.getElementById('page-title').textContent = 'Home';
+            document.getElementById('current-page').textContent = 'HOME';
+            updateNavActive(null);
+        }
+
+        // Carregar página MD
+        async function loadPage(file, title) {
+            if (!file) return;
+
+            currentFile = file;
+            const content = document.getElementById('content');
+            content.innerHTML = '<div class="loading">⚙️ Carregando...</div>';
+            document.getElementById('page-title').textContent = title;
+            document.getElementById('current-page').textContent = file.toUpperCase();
+
+            try {
+                const response = await fetch(file);
+                if (!response.ok) throw new Error('Arquivo não encontrado');
+
+                const markdown = await response.text();
+                const html = marked.parse(markdown);
+                content.innerHTML = html;
+
+                // Adicionar scroll ao topo
+                document.querySelector('.content').scrollTop = 0;
+                updateNavActive(file);
+            } catch (error) {
+                content.innerHTML = `
+                    <h1>❌ Erro ao carregar</h1>
+                    <p>Não foi possível carregar o arquivo: <strong>${file}</strong></p>
+                    <p style="color: var(--accent);">${error.message}</p>
+                `;
+            }
+        }
+
+        // Atualizar nav ativo
+        function updateNavActive(file) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (!file && link.textContent.includes('Home')) {
+                    link.classList.add('active');
+                } else if (file && link.onclick.toString().includes(file)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Search functionality
+        document.getElementById('search').addEventListener('input', function(e) {
+            const term = e.target.value.toLowerCase();
+            document.querySelectorAll('.nav-link-sub').forEach(link => {
+                const text = link.textContent.toLowerCase();
+                link.style.display = text.includes(term) ? 'block' : 'none';
+            });
+        });
+
+        // Inicializar
+        renderNav();
+        loadHome();
+
+        // Atualizar status
+        setInterval(() => {
+            const statuses = ['Sistema Online', 'Conectado', 'Sincronizado', 'Pronto'];
+            document.getElementById('status').textContent = statuses[Math.floor(Math.random() * statuses.length)];
+        }, 5000);
+    </script>
+</body>
+</html>
